@@ -2,7 +2,9 @@
 
 An IoT-based plant health monitoring and automated irrigation system using TinyML, ESP32 microcontroller, and cloud-deployed data pipeline.
 
-![System Architecture](docs/dashboard_layput.jpeg "Architecture Diagram")
+
+<img width="1536" height="1024" alt="dashboard01" src="https://github.com/user-attachments/assets/2c8eaf56-55b4-4c94-9045-6251af8d50a3" />
+
 
 ## Overview
 
@@ -10,7 +12,8 @@ This project combines edge computing with cloud-based analytics to monitor plant
 
 ## System Architecture
 
-![System Architecture](docs/flowchart.drawio.png "Architecture Diagram")
+
+<img width="1024" height="1536" alt="ChatGPT Image Dec 29, 2025, 03_55_03 PM" src="https://github.com/user-attachments/assets/6bbe3784-5fc4-49b3-bd23-3060e975c399" />
 
 
 ### Hardware Components
@@ -36,16 +39,20 @@ This project combines edge computing with cloud-based analytics to monitor plant
 - **ML Framework:** TensorFlow Lite Micro (TinyML)
 - **Communication Protocol:** MQTT
 
-**Cloud Infrastructure (Docker Containerized)**
+**Cloud Infrastructure (AWS Managed Services)**
 
-The entire data pipeline is containerized using Docker and deployed on cloud platforms (AWS / Azure / Hostinger) enabling remote access to the dashboard from anywhere in the world.
+The entire data pipeline is built using AWS managed cloud services.
+Sensor data is securely ingested, stored, and visualized through AWS IoT Core,
+Amazon Timestream, and Amazon Managed Grafana, enabling remote access to the dashboard
+from anywhere in the world.
+
 
 | Component | Function |
 |-----------|----------|
-| **Mosquitto** | MQTT broker for receiving sensor data from ESP32 |
-| **Telegraf** | Data collection agent and metrics aggregation |
-| **InfluxDB** | Time-series database for storing sensor data |
-| **Grafana** | Real-time visualization and monitoring dashboards |
+| **AWS IoT Core** | Managed MQTT broker for securely receiving sensor data from ESP32 or simulators|
+| **AWS IoT Rule Engine** | Routes incoming MQTT messages to downstream AWS services |
+| **Amazon Timestream** | Managed time-series database for storing sensor telemetry data |
+| **Amazon Managed Grafana** |Cloud-based dashboards for real-time visualization and monitoring |
 
 ### Machine Learning Models
 
@@ -94,12 +101,18 @@ The Smart Farm IoT Dashboard displays real-time monitoring data:
 
 ## Deployment
 
-The Docker containerized stack (Mosquitto → Telegraf → InfluxDB → Grafana) can be deployed on:
-- **AWS** (EC2 / ECS)
-- **Azure** (Container Instances / AKS)
-- **Hostinger** (VPS)
+The system is deployed using AWS managed cloud services, where each component is provided
+as a fully managed service by AWS.
 
-This enables accessing the Grafana dashboard from any location worldwide via web browser.
+AWS Cloud (Managed Services)
+- AWS IoT Core
+- AWS IoT Rule Engine
+- Amazon Timestream
+- Amazon Managed Grafana
+
+
+This architecture enables secure, remote access to real-time monitoring dashboards
+through Amazon Managed Grafana from any location via a web browser.
 
 ## Getting Started
 
