@@ -1,0 +1,116 @@
+[agent]
+  interval = "10s"
+  round_interval = true
+  flush_interval = "10s"
+  precision = "1s"
+
+###############################################################################
+# TELEMETRY
+###############################################################################
+[[inputs.mqtt_consumer]]
+  servers = ["tcp://mosquitto:1883"]
+  topics  = ["farm/+/+/telemetry"]
+  qos = 0
+  data_format = "json_v2"
+  name_override = "telemetry"
+
+  [[inputs.mqtt_consumer.json_v2]]
+    [[inputs.mqtt_consumer.json_v2.tag]]
+      path = "site"
+    [[inputs.mqtt_consumer.json_v2.tag]]
+      path = "node"
+
+    [[inputs.mqtt_consumer.json_v2.field]]
+      path = "soil_moisture"
+      type = "float"
+    [[inputs.mqtt_consumer.json_v2.field]]
+      path = "temperature"
+      type = "float"
+    [[inputs.mqtt_consumer.json_v2.field]]
+      path = "humidity"
+      type = "float"
+    [[inputs.mqtt_consumer.json_v2.field]]
+      path = "ph"
+      type = "float"
+
+    [[inputs.mqtt_consumer.json_v2.field]]
+      path = "n"
+      type = "float"
+      optional = true
+    [[inputs.mqtt_consumer.json_v2.field]]
+      path = "p"
+      type = "float"
+      optional = true
+    [[inputs.mqtt_consumer.json_v2.field]]
+      path = "k"
+      type = "float"
+      optional = true
+
+###############################################################################
+# STATUS (ONLINE)
+###############################################################################
+[[inputs.mqtt_consumer]]
+  servers = ["tcp://mosquitto:1883"]
+  topics  = ["farm/+/+/status"]
+  qos = 1
+  data_format = "json_v2"
+  name_override = "status"
+
+  [[inputs.mqtt_consumer.json_v2]]
+    [[inputs.mqtt_consumer.json_v2.tag]]
+      path = "site"
+    [[inputs.mqtt_consumer.json_v2.tag]]
+      path = "node"
+
+    [[inputs.mqtt_consumer.json_v2.field]]
+      path = "online"
+      type = "bool"
+
+###############################################################################
+# CONTROL (DECISIONS)
+###############################################################################
+[[inputs.mqtt_consumer]]
+  servers = ["tcp://mosquitto:1883"]
+  topics  = ["farm/+/+/control"]
+  qos = 1
+  data_format = "json_v2"
+  name_override = "control"
+
+  [[inputs.mqtt_consumer.json_v2]]
+    [[inputs.mqtt_consumer.json_v2.tag]]
+      path = "site"
+    [[inputs.mqtt_consumer.json_v2.tag]]
+      path = "node"
+
+    [[inputs.mqtt_consumer.json_v2.field]]
+      path = "decision"
+      type = "string"
+
+    [[inputs.mqtt_consumer.json_v2.field]]
+      path = "irrigation"
+      type = "bool"
+      optional = true
+
+    [[inputs.mqtt_consumer.json_v2.field]]
+      path = "soil_moisture"
+      type = "float"
+      optional = true
+
+    [[inputs.mqtt_consumer.json_v2.field]]
+      path = "min_th"
+      type = "float"
+      optional = true
+
+    [[inputs.mqtt_consumer.json_v2.field]]
+      path = "max_th"
+      type = "float"
+      optional = true
+
+###############################################################################
+# OUTPUT
+###############################################################################
+[[outputs.influxdb_v2]]
+  urls = ["http://influxdb:8086"]
+  token = "${INFLUX_TOKEN}"
+  organization = "${INFLUX_ORG}"
+  bucket = "smartfarm"
